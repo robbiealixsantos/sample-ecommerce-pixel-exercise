@@ -9,22 +9,22 @@
       "value": "production"
     },
     "META_PIXEL_ID": {
-      "description": "Meta pixel id (optional)"
+      "description": "1857733018507268"
     },
     "TIKTOK_PIXEL_ID": {
-      "description": "TikTok pixel id (optional)"
+      "description": "D2D6353C77U9PLHEHT9G"
     },
     "SNAP_PIXEL_ID": {
-      "description": "Snap pixel id (optional)"
+      "description": "707ae48d-cce2-4e67-9baa-61d7d0e77365"
     },
     "CURRENCY": {
       "value": "USD"
     },
     "SCENARIO_SKIP_CHECKOUT_PIXELS": {
-      "value": "false"
+      "value": "true"
     },
     "SCENARIO_DEFER_FIRST_LOAD_AFTER_CONSENT": {
-      "value": "false"
+      "value": "true"
     },
     "SCENARIO_NO_SNAP_PII": {
       "value": "true"
@@ -35,7 +35,7 @@
   },
   "addons": [
     {
-      "plan": "heroku-postgresql:hobby-dev"
+      "plan": "heroku-postgresql:essential-0"
     }
   ],
   "scripts": {
