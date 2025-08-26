@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-6">Checkout</h1>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="lg:col-span-2">
+    <form method="post" class="bg-white rounded-2xl shadow p-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><label class="block text-sm mb-1">Full Name</label><input name="name" class="w-full border rounded-lg px-3 py-2" required></div>
+        <div><label class="block text-sm mb-1">Email</label><input name="email" type="email" class="w-full border rounded-lg px-3 py-2" required></div>
+        <div class="md:col-span-2"><label class="block text-sm mb-1">Address</label><input name="address" class="w-full border rounded-lg px-3 py-2" required></div>
+        <div><label class="block text-sm mb-1">City</label><input name="city" class="w-full border rounded-lg px-3 py-2" required></div>
+        <div><label class="block text-sm mb-1">State</label><input name="state" class="w-full border rounded-lg px-3 py-2" required></div>
+        <div><label class="block text-sm mb-1">Postal Code</label><input name="postal" class="w-full border rounded-lg px-3 py-2" required></div>
+      </div>
+      <button class="px-4 py-2 rounded-lg bg-gray-900 text-white">Place Order</button>
+    </form>
+  </div>
+  <div>
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h2 class="font-semibold mb-4">Order Summary</h2>
+      <ul class="divide-y">
+        {% for it in items %}
+          <li class="py-2 flex items-center justify-between">
+            <span>{{ it.qty }} × {{ it.product.name }}</span>
+            <span class="font-medium">{{ money(it.line_total) }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+      <div class="mt-4 flex justify-between text-lg">
+        <span>Subtotal</span><span class="font-semibold">{{ money(subtotal) }}</span>
+      </div>
+      <p class="mt-2 text-sm text-gray-500">This is a mock checkout — no payment is processed.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<script>
+(function(){
+  var items=[];
+  {% for it in items %}
+    items.push({id:String({{ it.product.id }}), name:{{ it.product.name|tojson }}, quantity:{{ it.qty }}, price:{{ it.product.price_cents }}/100.0});
+  {% endfor %}
+  var value={{ subtotal }}/100.0;
+  var payload={
+    content_ids: items.map(i=>i.id),
+    item_ids: items.map(i=>i.id),
+    content_type:'product',
+    price: value, value: value, currency: window.PIXELS.currency,
+    num_items: items.reduce((a,b)=>a+b.quantity,0)
+  };
+
+  if (typeof fbq==='function' && window.PIXELS.meta) fbq('track','InitiateCheckout', payload);
+  if (window.ttq && window.PIXELS.tiktok) ttq.track('InitiateCheckout', payload);
+  if (typeof snaptr==='function' && window.PIXELS.snap) snaptr('track','START_CHECKOUT'); // Snap: no ids/values/PII
+
+  var form=document.querySelector('form[method="post"]');
+  if(form){
+    form.addEventListener('submit', function(){
+      var email = form.querySelector('input[name="email"]').value || '';
+      var withPII = Object.assign({}, payload, { email: email });
+      if (typeof fbq==='function' && window.PIXELS.meta) fbq('track','AddPaymentInfo', withPII);
+      if (window.ttq && window.PIXELS.tiktok) ttq.track('AddPaymentInfo', withPII);
+      if (typeof snaptr==='function' && window.PIXELS.snap){
+        // Snap: keep free of PII and values per scenario
+        snaptr('track','ADD_BILLING');
+      }
+    });
+  }
+})();
+</script>

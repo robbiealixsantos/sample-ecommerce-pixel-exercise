@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Your Cart</h1>
+{% if not items %}<p>Your cart is empty.</p>{% else %}
+<div class="bg-white rounded-2xl shadow divide-y">
+  {% for it in items %}
+    <div class="p-4 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <img src="{{ it.product.image_url }}" alt="{{ it.product.name }}" class="w-20 h-20 object-cover rounded-lg">
+        <div>
+          <div class="font-semibold">{{ it.product.name }}</div>
+          <div class="text-sm text-gray-600">Qty: {{ it.qty }}</div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-6">
+        <div class="font-semibold">{{ money(it.line_total) }}</div>
+        <form action="{{ url_for('remove_from_cart', product_id=it.product.id) }}" method="post">
+          <button class="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Remove</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<div class="mt-6 flex items-center justify-between">
+  <div class="text-xl">Subtotal: <span class="font-semibold">{{ money(subtotal) }}</span></div>
+  <a href="{{ url_for('checkout') }}" class="px-4 py-2 rounded-lg bg-gray-900 text-white">Checkout</a>
+</div>
+{% endif %}
+{% endblock %}

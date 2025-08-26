@@ -1,0 +1,44 @@
+{
+  "name": "Mock E\u2011commerce (Flask) \u2022 Cookie Consent + Meta/TikTok/Snap Pixels",
+  "description": "Demo shop with consent banner and placeholder pixels + troubleshooting scenarios.",
+  "env": {
+    "SECRET_KEY": {
+      "generator": "secret"
+    },
+    "FLASK_ENV": {
+      "value": "production"
+    },
+    "META_PIXEL_ID": {
+      "description": "Meta pixel id (optional)"
+    },
+    "TIKTOK_PIXEL_ID": {
+      "description": "TikTok pixel id (optional)"
+    },
+    "SNAP_PIXEL_ID": {
+      "description": "Snap pixel id (optional)"
+    },
+    "CURRENCY": {
+      "value": "USD"
+    },
+    "SCENARIO_SKIP_CHECKOUT_PIXELS": {
+      "value": "false"
+    },
+    "SCENARIO_DEFER_FIRST_LOAD_AFTER_CONSENT": {
+      "value": "false"
+    },
+    "SCENARIO_NO_SNAP_PII": {
+      "value": "true"
+    },
+    "SCENARIO_NO_SNAP_VALUES": {
+      "value": "true"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "python seed.py"
+  }
+}
