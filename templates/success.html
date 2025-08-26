@@ -12,8 +12,8 @@
 (function(){
   var value={{ order.total_cents }}/100.0;
   var payload={ value: value, currency: window.PIXELS.currency, email: {{ order.customer_email|tojson }} };
-  if (typeof fbq==='function' && window.PIXELS.meta) fbq('track','Purchase', payload);
-  if (window.ttq && window.PIXELS.tiktok) ttq.track('CompletePayment', payload);
-  if (typeof snaptr==='function' && window.PIXELS.snap) snaptr('track','PURCHASE'); // Snap: no ids/values/PII
+  fbq('track','Purchase', payload);
+  ttq.track('CompletePayment', payload);
+  snaptr('track','PURCHASE'); // Snap: no ids/values/PII
 })();
 </script>

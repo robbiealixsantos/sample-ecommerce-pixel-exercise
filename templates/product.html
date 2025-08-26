@@ -22,17 +22,17 @@
     content_id:String(pid), item_id:String(pid), content_ids:[String(pid)],
     content_type:'product', content_name:pname, price: price, value: price, currency: window.PIXELS.currency
   };
-  if (typeof fbq==='function' && window.PIXELS.meta) fbq('track','ViewContent', payload);
-  if (window.ttq && window.PIXELS.tiktok) ttq.track('ViewContent', payload);
-  if (typeof snaptr==='function' && window.PIXELS.snap) snaptr('track','VIEW_CONTENT'); // Snap: no ids/values/PII
+  fbq('track','ViewContent', payload);
+  ttq.track('ViewContent', payload);
+  snaptr('track','VIEW_CONTENT'); // Snap: no ids/values/PII
 
   var form=document.querySelector('form[action="{{ url_for("add_to_cart") }}"]');
   if(form){ form.addEventListener('submit', function(){
     var qty=parseInt(form.querySelector('input[name="quantity"]').value||'1',10);
     var p2=Object.assign({}, payload, {quantity: qty});
-    if (typeof fbq==='function' && window.PIXELS.meta) fbq('track','AddToCart', p2);
-    if (window.ttq && window.PIXELS.tiktok) ttq.track('AddToCart', p2);
-    if (typeof snaptr==='function' && window.PIXELS.snap) snaptr('track','ADD_TO_CART'); // Snap: no ids/values/PII
+    fbq('track','AddToCart', p2);
+    ttq.track('AddToCart', p2);
+    snaptr('track','ADD_TO_CART'); // Snap: no ids/values/PII
   });}
 })();
 </script>
