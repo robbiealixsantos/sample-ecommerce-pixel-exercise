@@ -8,13 +8,13 @@
 </div>
 
 <script>
-(function(){
-  var value={{ order.total_cents }}/100.0;
-  var payload={ value: value, currency: window.PIXELS.currency, email: {{ order.customer_email|tojson }} };
-  fbq('track','Purchase', payload);
-  ttq.track('CompletePayment', payload);
-  snaptr('track','PURCHASE'); // Snap: no ids/values/PII
-})();
+  document.addEventListener('DOMContentLoaded', function () { 
+    var value={{ order.total_cents }}/100.0;
+    var payload={ value: value, currency: window.PIXELS.currency, email: {{ order.customer_email|tojson }} };
+    fbq('track','Purchase', payload);
+    ttq.track('CompletePayment', payload);
+    snaptr('track','PURCHASE'); // Snap: no ids/values/PII
+  });
 </script>
 {% endblock %}
 
